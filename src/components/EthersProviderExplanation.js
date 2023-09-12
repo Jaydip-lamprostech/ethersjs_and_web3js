@@ -21,13 +21,13 @@ function EthersProviderExplanation() {
     });
     try {
       const { ethereum } = window; // Ensure that the user is connected to the expected chain
-      //   const provider = new ethers.providers.Web3Provider(ethereum);
-      //   const provider = new ethers.providers.JsonRpcProvider(
-      //     "https://goerli.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
-      //   );
+      // const provider = new ethers.providers.Web3Provider(ethereum);
       const provider = new ethers.providers.JsonRpcProvider(
-        "https://mainnet.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
+        "https://goerli.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
       );
+      // const provider = new ethers.providers.JsonRpcProvider(
+      //   "https://mainnet.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
+      // );
 
       const network = await provider.getNetwork();
       const transactionCount = await provider.getTransactionCount(address);
