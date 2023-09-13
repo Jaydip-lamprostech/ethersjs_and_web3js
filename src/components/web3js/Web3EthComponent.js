@@ -7,9 +7,9 @@ function Web3EthComponent() {
   const [balance, setBalance] = useState(null);
   const [txStatus, setTxStatus] = useState({
     status: "-",
-    txHash: "-",
     receipt: "-",
   });
+  const [txHash, settxHash] = useState("");
 
   const initWeb3 = async () => {
     try {
@@ -19,14 +19,16 @@ function Web3EthComponent() {
         await window.ethereum.enable();
         setWeb3(web3Instance);
         console.log(web3Instance);
+        // get all the connected accounts
         console.log(await web3Instance.eth.getAccounts());
+
         console.log(web3Instance.eth.ens);
 
         const getAddress = await web3Instance.eth.ens.getOwner(
           "vitalik.eth",
           () => {}
         );
-        console.log(getAddress);
+        console.log("vitalik.eth owner -", getAddress);
       } else {
         console.log("Please install MetaMask");
       }
@@ -51,8 +53,8 @@ function Web3EthComponent() {
   const handleSendTransaction = async () => {
     setTxStatus({
       status: "-",
-      txHash: "-",
     });
+    settxHash("");
     if (web3) {
       try {
         await web3.eth
@@ -62,7 +64,7 @@ function Web3EthComponent() {
             value: web3.utils.toWei("0.01", "ether"), // Sending 0.01 ETH
           })
           .once("sending", function (payload) {
-            setTxStatus({ txHash: "-", status: "Sending..." });
+            setTxStatus({ status: "Sending..." });
             console.log(payload);
           })
           .once("sent", function (payload) {
@@ -73,15 +75,16 @@ function Web3EthComponent() {
           .once("transactionHash", function (hash) {
             setTxStatus({
               status: "Waiting for the confirmation...",
-              txHash: hash,
             });
+            settxHash(hash);
+
             console.log("hash -", hash);
           })
           .once("receipt", function (receipt) {
             setTxStatus({
-              ...txStatus,
               status: " Transferred Successfully",
             });
+
             console.log("receipt -", receipt);
           })
           .on("confirmation", function (confNumber) {
@@ -113,6 +116,7 @@ function Web3EthComponent() {
       {balance && <p>Balance: {balance} ETH</p>}
       <button onClick={fetchBalance}>fetchBalance</button>
       <div>
+        <button onClick={handleSendTransaction}>Send Transaction</button>
         <table>
           <thead>
             <tr>
@@ -127,11 +131,10 @@ function Web3EthComponent() {
             </tr>
             <tr>
               <td>Transaction Hash</td>
-              <td>{txStatus.txHash}</td>
+              <td>{txHash}</td>
             </tr>
           </tbody>
         </table>
-        <button onClick={handleSendTransaction}>Send Transaction</button>
       </div>
       <div>
         <p>Create Account</p>

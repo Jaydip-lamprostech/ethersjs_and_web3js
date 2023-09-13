@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { ethers } from "ethers";
 
 const WalletFunctionsComponent = () => {
+  const [privateKey, setPrivateKey] = useState("");
+  // creating a wallet
   const createRandomWallet = () => {
     const wallet = ethers.Wallet.createRandom();
     console.log("Random Wallet:", wallet);
+    // Get the private key
+    const privateKey = wallet.privateKey;
+    setPrivateKey(wallet.privateKey);
+    console.log("Private Key:", privateKey);
   };
 
   const connectToProvider = async () => {
     try {
       const provider = new ethers.providers.JsonRpcProvider(
-        "https://mainnet.infura.io/v3/YOUR_INFURA_API_KEY"
+        "https://goerli.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
       );
-      const wallet = new ethers.Wallet("YOUR_PRIVATE_KEY", provider);
+      const wallet = new ethers.Wallet(privateKey, provider);
       console.log("Connected Wallet:", wallet);
     } catch (error) {
       console.error("Error connecting to provider:", error);
@@ -21,10 +27,7 @@ const WalletFunctionsComponent = () => {
 
   const signMessage = async () => {
     try {
-      const wallet = new ethers.Wallet(
-        "YOUR_PRIVATE_KEY",
-        ethers.getDefaultProvider()
-      );
+      const wallet = new ethers.Wallet(privateKey, ethers.getDefaultProvider());
       const message = "Hello, World!";
       const signature = await wallet.signMessage(message);
       console.log("Message Signature:", signature);
@@ -35,10 +38,7 @@ const WalletFunctionsComponent = () => {
 
   const getBalance = async () => {
     try {
-      const wallet = new ethers.Wallet(
-        "YOUR_PRIVATE_KEY",
-        ethers.getDefaultProvider()
-      );
+      const wallet = new ethers.Wallet(privateKey, ethers.getDefaultProvider());
       const balance = await wallet.getBalance();
       console.log("Balance:", ethers.utils.formatEther(balance));
     } catch (error) {

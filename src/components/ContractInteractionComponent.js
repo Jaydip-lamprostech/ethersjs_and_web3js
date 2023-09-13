@@ -15,9 +15,7 @@ const ContractInteractionComponent = () => {
       const wallet = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://sepolia.mode.network/"
-      ); // U
+
       console.log("Wallet connected:", wallet[0]);
       setAddress(wallet[0]);
       //   setContract(
@@ -30,6 +28,8 @@ const ContractInteractionComponent = () => {
 
   const loadContract = () => {
     try {
+      // const { ethereum } = window; // Ensure that the user is connected to the expected chain
+      // const provider = new ethers.providers.Web3Provider(ethereum);
       const provider = new ethers.providers.JsonRpcProvider(
         "https://sepolia.mode.network/"
       );
@@ -47,7 +47,7 @@ const ContractInteractionComponent = () => {
 
   const callFunction = async () => {
     try {
-      const response = await contract[functionName]("jaydipsomething");
+      const response = await contract[functionName]("jaydip");
       console.log(`Function "${functionName}" called. Result:`, response);
 
       const etherValue = ethers.utils.formatEther(response);

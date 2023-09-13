@@ -11,10 +11,13 @@ function Web3Example() {
       <h1>Web3.js</h1>
       <h2>Ethereum Component</h2>
       <Web3EthComponent />
+      <hr />
       <h2>Ethereum Contract Interaction</h2>
       <Web3EthContract />
+      <hr />
       <h2>Web3EthEvents</h2>
       <Web3EthEvents />
+      <hr />
       <h2>Web3UtilsComponent</h2>
       <Web3UtilsComponent />
     </div>
