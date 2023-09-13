@@ -20,19 +20,25 @@ function EthersProviderExplanation() {
       balance: "fetching...",
     });
     try {
-      const { ethereum } = window; // Ensure that the user is connected to the expected chain
+      // const { ethereum } = window; // Ensure that the user is connected to the expected chain
       // const provider = new ethers.providers.Web3Provider(ethereum);
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://goerli.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
-      );
       // const provider = new ethers.providers.JsonRpcProvider(
-      //   "https://mainnet.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
+      //   "https://goerli.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
       // );
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://mainnet.infura.io/v3/2e61e70560ca4ef7a8cdaa270fe2998f"
+      );
 
       const network = await provider.getNetwork();
+
       const transactionCount = await provider.getTransactionCount(address);
-      //   const transactionCount = await provider.getTransactionCount("vitalik.eth");
+      const transactionCountByENS = await provider.getTransactionCount(
+        "vitalik.eth"
+      );
+      console.log("transactionCountByENS - ", transactionCountByENS);
+
       const balance = await provider.getBalance(address);
+
       setProviderInfo({
         networkName: network.name,
         chainId: network.chainId,
@@ -41,7 +47,7 @@ function EthersProviderExplanation() {
       });
 
       //Returns an EnsResolver instance which can be used to further inquire about specific entries for an ENS name.
-      const resolver = await provider.getResolver("ricmoo.eth");
+      const resolver = await provider.getResolver("vitalik.eth");
       console.log(resolver);
 
       //Returns the URL for the avatar associated to the ENS name, or null if no avatar was configured.
@@ -78,6 +84,7 @@ function EthersProviderExplanation() {
       );
       console.log(transactionDetails);
 
+      //Returns the transaction receipt for hash or null if the transaction has not been mined.
       const txReceipt = await provider.getTransactionReceipt(
         "0x5b73e239c55d790e3c9c3bbb84092652db01bb8dbf49ccc9e4a318470419d9a0"
       );
